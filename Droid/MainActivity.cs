@@ -39,10 +39,13 @@ namespace Xmemo.Droid
                 MemoHolder.Current.Memo.Text = memoText.Text;
             };
 
+            //日付の追加
+            FindViewById<EditText>(Resource.Id.DateText).Click += DateText_Click;
+
 
         }
 
-        // メモの描画
+        //メモの描画
         private void DisplayMemo()
         {
             var memo = MemoHolder.Current.Memo;
@@ -50,6 +53,20 @@ namespace Xmemo.Droid
                 Format("{0:yyyy/MMM/dd}", memo.Date);
             FindViewById<EditText>(Resource.Id.SubjectText).Text = memo.Subject;
             FindViewById<EditText>(Resource.Id.MemoText).Text = memo.Text;
+        }
+
+        [Obsolete]
+        private void DateText_Click(object sender, EventArgs e)
+        {
+            var datePicker = new MyDatePicker();
+            datePicker.InitialDate = MemoHolder.Current.Memo.Date;
+            datePicker.Selected += (s2, e2) =>
+            {
+                MemoHolder.Current.Memo.Date = e2.SelectedDate;
+                DisplayMemo();
+            };
+
+            datePicker.Show(FragmentManager, "tag");
         }
     }
 }
