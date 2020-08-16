@@ -1,6 +1,7 @@
 ﻿using System;
-
 using UIKit;
+using System.Diagnostics;
+using Foundation;
 
 namespace Xmemo.iOS
 {
@@ -16,13 +17,74 @@ namespace Xmemo.iOS
         {
             base.ViewDidLoad();
 
-            // Perform any additional setup after loading the view, typically from a nib.
-            Button.AccessibilityIdentifier = "myButton";
-            Button.TouchUpInside += delegate
+            MemoHolder.Current.Memo = new Memo()
             {
-                var title = string.Format("{0} clicks!", count++);
-                Button.SetTitle(title, UIControlState.Normal);
+                Date = DateTime.Now,
+                Subject = "",
+                Text = "",
             };
+
+            DisplayMemo();
+
+            SubjectText.EditingChanged += (s, e) =>
+            {
+                MemoHolder.Current.Memo.Subject = SubjectText.Text;
+            };
+
+            MemoText.EditingChanged += (s, e) =>
+            {
+                MemoHolder.Current.Memo.Text = MemoText.Text;
+            };
+
+            SetupDatePicker();
+        }
+
+        private void DisplayMemo()
+        {
+            var memo = MemoHolder.Current.Memo;
+
+            DateText.Text = string.Format("{0:yyyy/MM/dd}", memo.Date);
+            SubjectText.Text = memo.Subject;
+            MemoText.Text = memo.Text;
+        }
+
+        private void SetupDatePicker()
+        {
+            var doneButton = new UIBarButtonItem("閉じる", UIBarButtonItemStyle.Done, (s, e) =>
+             {
+                 //DateTextのDatePickerを閉じる
+                 DateText.ResignFirstResponder();
+             });
+
+            //閉じるボタンを乗せるツールバー
+            var toolbar = new UIToolbar()
+            {
+                BarStyle = UIBarStyle.Default,
+                Translucent = true,
+                TintColor = null,
+            };
+            toolbar.SizeToFit();
+            toolbar.SetItems(new[]
+            {
+                new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace),
+                doneButton,
+            }, true);
+
+            //DatePicker
+            var datePicker = new UIDatePicker()
+            {
+                Mode = UIDatePickerMode.Date,
+                Locale = new NSLocale("ja_JP"),
+            };
+            datePicker.ValueChanged += (s, e) =>
+            {                
+                MemoHolder.Current.Memo.Date = (DateTime)datePicker.Date;
+                DisplayMemo();
+            };
+
+            //DateTextに作成したツールバーとDatePickerをセットする
+            DateText.InputAccessoryView = toolbar;
+            DateText.InputView = datePicker;
         }
 
         public override void DidReceiveMemoryWarning()
