@@ -25,6 +25,8 @@ namespace Xmemo.Droid
 		
 		public static void UpdateIdValues()
 		{
+			global::PCLStorage.Resource.String.ApplicationName = global::Xmemo.Droid.Resource.String.ApplicationName;
+			global::PCLStorage.Resource.String.Hello = global::Xmemo.Droid.Resource.String.Hello;
 		}
 		
 		public partial class Attribute
@@ -113,10 +115,16 @@ namespace Xmemo.Droid
 		{
 			
 			// aapt resource value: 0x7F040000
-			public const int app_name = 2130968576;
+			public const int ApplicationName = 2130968576;
+			
+			// aapt resource value: 0x7F040002
+			public const int app_name = 2130968578;
 			
 			// aapt resource value: 0x7F040001
-			public const int hello = 2130968577;
+			public const int Hello = 2130968577;
+			
+			// aapt resource value: 0x7F040003
+			public const int hello = 2130968579;
 			
 			static String()
 			{
