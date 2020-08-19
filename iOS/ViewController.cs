@@ -1,6 +1,5 @@
 ﻿using System;
 using UIKit;
-using System.Diagnostics;
 using Foundation;
 
 namespace Xmemo.iOS
