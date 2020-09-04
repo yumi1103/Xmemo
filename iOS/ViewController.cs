@@ -27,6 +27,7 @@ namespace Xmemo.iOS
 
             SubjectText.EditingChanged += (s, e) =>
             {
+
                 MemoHolder.Current.Memo.Subject = SubjectText.Text;
             };
 
@@ -36,6 +37,18 @@ namespace Xmemo.iOS
             };
 
             SetupDatePicker();
+
+            SaveButton.TouchUpInside += async (s, e) =>
+            {
+                await MemoHolder.Current.SaveAsync();
+            };
+
+            LoadButton.TouchUpInside += async (s, e) =>
+            {
+                await MemoHolder.Current.LoadAsync();
+                DisplayMemo();
+            };
+
         }
 
         private void DisplayMemo()

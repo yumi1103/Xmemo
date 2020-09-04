@@ -42,6 +42,18 @@ namespace Xmemo.Droid
             //日付の追加
             FindViewById<EditText>(Resource.Id.DateText).Click += DateText_Click;
 
+            var saveButton = FindViewById<Button>(Resource.Id.LoadButton);
+            saveButton.Click += async (s, e) =>
+            {
+                await MemoHolder.Current.SaveAsync();
+            };
+
+            var loadButton = FindViewById<Button>(Resource.Id.LoadButton);
+            loadButton.Click += async (s, e) =>
+            {
+                await MemoHolder.Current.LoadAsync();
+                DisplayMemo();
+            };
 
         }
 
